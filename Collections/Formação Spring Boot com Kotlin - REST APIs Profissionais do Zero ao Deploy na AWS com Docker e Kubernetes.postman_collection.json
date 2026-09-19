@@ -1236,8 +1236,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "<long>",
-									"description": "(Required) "
+									"value": "{{personId}}",
+									"description": "(Required) The ID of the record"
 								}
 							]
 						},
@@ -1421,8 +1421,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "<long>",
-									"description": "(Required) "
+									"value": "{{personId}}",
+									"description": "(Required) The ID of the record"
 								}
 							]
 						},
@@ -1602,7 +1602,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+							"raw": "{\n  \"id\": {{personId}},\n  \"firstName\": \"Linus\",\n  \"lastName\": \"Benedict Torvalds\",\n  \"address\": \"Helsinki - Finland\",\n  \"gender\": \"Male\",\n  \"enabled\": true,\n  \"profileUrl\": \"https://pub.erudio.com.br/meus-cursos\",\n  \"photoUrl\": \"https://pub.erudio.com.br/meus-cursos\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1890,7 +1890,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+							"raw": "{\n  \"firstName\": \"Linus\",\n  \"lastName\": \"Torvalds\",\n  \"address\": \"Helsinki - Finland\",\n  \"gender\": \"Male\",\n  \"enabled\": true,\n  \"profileUrl\": \"https://pub.erudio.com.br/meus-cursos\",\n  \"photoUrl\": \"https://pub.erudio.com.br/meus-cursos\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -2076,6 +2076,25 @@
 							"header": [],
 							"cookie": [],
 							"body": ""
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code >= 200 && pm.response.code <= 299) {\r",
+									"    try {\r",
+									"        var jsonData = pm.response.json();\r",
+									"        pm.environment.set('personId', jsonData.id);\r",
+									"    } catch (error) {\r",
+									"        console.error(\"Error parsing the JSON response!\")\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					]
 				},
@@ -2291,7 +2310,7 @@
 					]
 				},
 				{
-					"name": "{{baseUrl}}/api/person/v1/exportPage?page=1&size=70&direction=asc",
+					"name": "Export a Page of People in PDF",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -2587,8 +2606,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "<long>",
-									"description": "(Required) "
+									"value": "1",
+									"description": "(Required) The ID of the record"
 								}
 							]
 						},
@@ -2812,8 +2831,8 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "<long>",
-									"description": "(Required) "
+									"value": "{{bookId}}",
+									"description": "(Required) The ID of the record"
 								}
 							]
 						},
@@ -2993,7 +3012,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"<long>\",\n  \"author\": \"<string>\",\n  \"launchDate\": \"<dateTime>\",\n  \"price\": \"<double>\",\n  \"title\": \"<string>\",\n  \"_links\": {\n    \"nulla__13\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"inf2\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"commodo_81f\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+							"raw": "{\n  \"id\": {{bookId}},\n  \"author\": \"Nigel Poulton\",\n  \"launchDate\": \"2024-01-01T00:00:00.000+00:00\",\n  \"price\": 55.99,\n  \"title\": \"Docker Deep Dive - Updated\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -3281,7 +3300,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id\": \"<long>\",\n  \"author\": \"<string>\",\n  \"launchDate\": \"<dateTime>\",\n  \"price\": \"<double>\",\n  \"title\": \"<string>\",\n  \"_links\": {\n    \"nulla__13\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"inf2\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"commodo_81f\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+							"raw": "{\n  \"author\": \"Nigel Poulton\",\n  \"launchDate\": \"2024-01-01T00:00:00.000+00:00\",\n  \"price\": 55.99,\n  \"title\": \"Docker Deep Dive\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -3467,6 +3486,25 @@
 							"header": [],
 							"cookie": [],
 							"body": ""
+						}
+					],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code >= 200 && pm.response.code <= 299) {\r",
+									"    try {\r",
+									"        var jsonData = pm.response.json();\r",
+									"        pm.environment.set('bookId', jsonData.id);\r",
+									"    } catch (error) {\r",
+									"        console.error(\"Error parsing the JSON response!\")\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
 					]
 				}
@@ -4553,8 +4591,8 @@
 									"if(pm.response.code >= 200 && pm.response.code <= 299) {\r",
 									"    try {\r",
 									"        var jsonData = pm.response.json();\r",
-									"        pm.environment.set('accessToken', jsonData.body.accessToken);\r",
-									"        pm.environment.set('refreshToken', jsonData.body.refreshToken);\r",
+									"        pm.environment.set('accessToken', jsonData.accessToken);\r",
+									"        pm.environment.set('refreshToken', jsonData.refreshToken);\r",
 									"    } catch (error) {\r",
 									"        console.error(\"Error parsing the JSON response!\")\r",
 									"    }\r",
@@ -4616,7 +4654,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4646,7 +4684,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}"
+							"body": "{\n  \"username\": \"leandro\",\n  \"authenticated\": true,\n  \"created\": \"2026-01-01T12:00:00.000+00:00\",\n  \"expiration\": \"2026-01-01T13:00:00.000+00:00\",\n  \"accessToken\": \"<jwt>\",\n  \"refreshToken\": \"<jwt>\"\n}"
 						},
 						{
 							"name": "Bad Request",
@@ -4660,7 +4698,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4699,7 +4737,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4738,7 +4776,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4769,26 +4807,6 @@
 				},
 				{
 					"name": "Create new Users",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"if(pm.response.code >= 200 && pm.response.code <= 299) {\r",
-									"    try {\r",
-									"        var jsonData = pm.response.json();\r",
-									"        pm.environment.set('accessToken', jsonData.body.accessToken);\r",
-									"        pm.environment.set('refreshToken', jsonData.body.refreshToken);\r",
-									"    } catch (error) {\r",
-									"        console.error(\"Error parsing the JSON response!\")\r",
-									"    }\r",
-									"}"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -4803,7 +4821,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
+							"raw": "{\n  \"username\": \"foobar\",\n  \"password\": \"foobar\",\n  \"fullname\": \"Foo Bar\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -4812,16 +4830,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/auth/signin",
+							"raw": "{{baseUrl}}/auth/createUser",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"auth",
-								"signin"
+								"createUser"
 							]
 						},
-						"description": "Adds a new person by passing in a JSON, XML or YML representation of the person."
+						"description": "Registers a new user in the system with the provided credentials."
 					},
 					"response": [
 						{
@@ -4840,7 +4858,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"foobar\",\n  \"password\": \"foobar\",\n  \"fullname\": \"Foo Bar\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4849,14 +4867,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/person/v1",
+									"raw": "{{baseUrl}}/auth/createUser",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"api",
-										"person",
-										"v1"
+										"auth",
+										"createUser"
 									]
 								}
 							},
@@ -4870,7 +4887,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}"
+							"body": "{\n  \"username\": \"foobar\",\n  \"password\": \"{pbkdf2}<hash>\",\n  \"fullname\": \"Foo Bar\"\n}"
 						},
 						{
 							"name": "Bad Request",
@@ -4884,7 +4901,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"foobar\",\n  \"password\": \"foobar\",\n  \"fullname\": \"Foo Bar\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4893,14 +4910,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/person/v1",
+									"raw": "{{baseUrl}}/auth/createUser",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"api",
-										"person",
-										"v1"
+										"auth",
+										"createUser"
 									]
 								}
 							},
@@ -4923,7 +4939,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"foobar\",\n  \"password\": \"foobar\",\n  \"fullname\": \"Foo Bar\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4932,14 +4948,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/person/v1",
+									"raw": "{{baseUrl}}/auth/createUser",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"api",
-										"person",
-										"v1"
+										"auth",
+										"createUser"
 									]
 								}
 							},
@@ -4962,7 +4977,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": "{\n  \"username\": \"foobar\",\n  \"password\": \"foobar\",\n  \"fullname\": \"Foo Bar\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -4971,14 +4986,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/person/v1",
+									"raw": "{{baseUrl}}/auth/createUser",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"api",
-										"person",
-										"v1"
+										"auth",
+										"createUser"
 									]
 								}
 							},
@@ -5001,8 +5015,8 @@
 									"if(pm.response.code >= 200 && pm.response.code <= 299) {\r",
 									"    try {\r",
 									"        var jsonData = pm.response.json();\r",
-									"        pm.environment.set('accessToken', jsonData.body.accessToken);\r",
-									"        pm.environment.set('refreshToken', jsonData.body.refreshToken);\r",
+									"        pm.environment.set('accessToken', jsonData.accessToken);\r",
+									"        pm.environment.set('refreshToken', jsonData.refreshToken);\r",
 									"    } catch (error) {\r",
 									"        console.error(\"Error parsing the JSON response!\")\r",
 									"    }\r",
@@ -5062,7 +5076,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": null,
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -5092,7 +5106,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}"
+							"body": "{\n  \"username\": \"leandro\",\n  \"authenticated\": true,\n  \"created\": \"2026-01-01T12:00:00.000+00:00\",\n  \"expiration\": \"2026-01-01T13:00:00.000+00:00\",\n  \"accessToken\": \"<jwt>\",\n  \"refreshToken\": \"<jwt>\"\n}"
 						},
 						{
 							"name": "Bad Request",
@@ -5106,7 +5120,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": null,
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -5145,7 +5159,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": null,
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -5184,7 +5198,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\": \"<long>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"address\": \"<string>\",\n  \"gender\": \"<string>\",\n  \"_links\": {\n    \"laborum_8_3\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"veniam1\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    },\n    \"Ut82\": {\n      \"href\": \"<string>\",\n      \"hreflang\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\",\n      \"deprecation\": \"<string>\",\n      \"profile\": \"<string>\",\n      \"name\": \"<string>\",\n      \"templated\": \"<boolean>\"\n    }\n  }\n}",
+									"raw": null,
 									"options": {
 										"raw": {
 											"headerFamily": "json",
