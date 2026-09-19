@@ -3,6 +3,7 @@ package br.com.erudio.model
 import jakarta.persistence.*
 import java.util.*
 
+@Suppress("DEPRECATION")
 @Entity
 @Table(name = "books")
 data class Book(

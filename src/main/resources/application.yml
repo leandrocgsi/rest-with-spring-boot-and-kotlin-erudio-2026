@@ -50,6 +50,7 @@ logging:
     # root: WARN
     # br.com.erudio: DEBUG
 springdoc:
+  enable-kotlin: false
   api-docs:
     version: openapi_3_0
   paths-to-match:

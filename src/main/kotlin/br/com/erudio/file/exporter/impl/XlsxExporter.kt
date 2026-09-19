@@ -24,7 +24,7 @@ class XlsxExporter : PersonExporter {
             for (i in headers.indices) {
                 val cell = headerRow.createCell(i)
                 cell.setCellValue(headers[i])
-                cell.cellStyle = createHeaderCellStyle(workbook)
+                cell.setCellStyle(createHeaderCellStyle(workbook))
             }
 
             var rowIndex = 1

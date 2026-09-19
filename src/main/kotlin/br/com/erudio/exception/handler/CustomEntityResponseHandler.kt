@@ -20,7 +20,7 @@ class CustomEntityResponseHandler : ResponseEntityExceptionHandler() {
 
     override fun createResponseEntity(
         body: Any?, headers: HttpHeaders, statusCode: HttpStatusCode, request: WebRequest
-    ): ResponseEntity<Any>? {
+    ): ResponseEntity<Any> {
         if (body is ProblemDetail && body.type == null) {
             body.type = URI.create("about:blank")
         }
