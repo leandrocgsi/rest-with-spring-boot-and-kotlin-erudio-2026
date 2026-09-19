@@ -31,6 +31,7 @@ Things worth knowing about the tests:
 - Import test annotations explicitly and `Assertions.*` with a star: `import org.junit.jupiter.api.*` next to `Assertions.*` makes `assertNotNull` ambiguous with JUnit 6's Kotlin assertions.
 - The test `file.upload-dir` is `target/test-uploads`, not the drive root used by the main config.
 - The PDF templates download images from `raw.githubusercontent.com` while the report is generated, so the PDF tests are skipped (via `NetworkAssumptions`) when that host is unreachable.
+- `src/test/resources/jasperreports.properties` sets `net.sf.jasperreports.awt.ignore.missing.font=true`. `people.jrxml` asks for the `Arial` font, which Linux machines (including GitHub Actions `ubuntu-latest`) do not have, and without the flag every PDF test fails with `JRFontNotFoundException`. JasperReports only reads this flag from a `jasperreports.properties` on the classpath, not from `-D`. Windows/macOS developers never see the problem, so check the PDF tests in a Linux container (`maven:3.9-eclipse-temurin-25-noble`) before blaming the CI.
 - Tests that import people (`massCreation`) delete what they created in `@AfterEach`; the other integration tests assume the seeded people are the only ones present.
 
 ## Runtime setup
