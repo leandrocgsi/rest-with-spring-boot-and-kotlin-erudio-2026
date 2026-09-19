@@ -14,9 +14,9 @@ class OpenApiConfig {
         return OpenAPI()
             .info(
                 Info()
-                    .title("Formação Spring Boot 2026: do Zero ao Deploy na AWS e GCP com Kotlin, Docker e Kubernetes")
+                    .title("Formação Spring Boot com Kotlin: REST APIs Profissionais do Zero ao Deploy na AWS com Docker e Kubernetes")
                     .version("v1")
-                    .description("Formação Spring Boot 2026: do Zero ao Deploy na AWS e GCP com Kotlin, Docker e Kubernetes")
+                    .description("Formação Spring Boot com Kotlin: REST APIs Profissionais do Zero ao Deploy na AWS com Docker e Kubernetes")
                     .termsOfService("https://pub.erudio.com.br/meus-cursos")
                     .license(
                         License()

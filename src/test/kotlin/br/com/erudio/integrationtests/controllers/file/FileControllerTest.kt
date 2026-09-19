@@ -50,7 +50,7 @@ class FileControllerTest : AuthenticatedIntegrationTest() {
     @Test
     fun uploadedFileCanBeDownloadedWithTheSameContent() {
         val name = uniqueName(".txt")
-        val content = upload(name, "Formação Spring Boot 2026".toByteArray(Charsets.UTF_8), "text/plain")
+        val content = upload(name, "Formação Spring Boot com Kotlin".toByteArray(Charsets.UTF_8), "text/plain")
 
         val downloaded = given().spec(authenticated())
             .`when`()

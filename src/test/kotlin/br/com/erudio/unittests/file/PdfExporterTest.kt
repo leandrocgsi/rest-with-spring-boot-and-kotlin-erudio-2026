@@ -84,8 +84,8 @@ class PdfExporterTest {
     fun exportPeopleShowsTheNameOfTheCourseInThePageHeader() {
         val pdf = read(exporter.exportPeople(listOf(person(1L, "Ayrton", "Senna"))))
 
-        assertTrue(pdf.text.contains("Spring Boot 2026"), pdf.text)
-        assertFalse(pdf.text.contains("RESTful from 0"), "the old course name must be gone: " + pdf.text)
+        assertTrue(pdf.text.contains("Spring Boot com Kotlin"), pdf.text)
+        assertFalse(pdf.text.contains("Spring Boot 2026"), "the old course name must be gone: " + pdf.text)
     }
 
     @Test

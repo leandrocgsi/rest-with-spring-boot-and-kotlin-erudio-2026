@@ -41,7 +41,7 @@ class QRCodeServiceTest {
 
     @Test
     fun encodesTextWithAccents() {
-        val text = "Formação Spring Boot 2026"
+        val text = "Formação Spring Boot com Kotlin"
 
         service.generateQRCode(text, 300, 300).use { png ->
             assertEquals(text, decode(ImageIO.read(png)))

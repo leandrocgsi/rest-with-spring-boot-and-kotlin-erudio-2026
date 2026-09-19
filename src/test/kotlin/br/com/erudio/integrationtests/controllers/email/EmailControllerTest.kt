@@ -76,10 +76,10 @@ class EmailControllerTest : AuthenticatedIntegrationTest() {
 
     @Test
     fun accentsSurviveTheTripThroughTheMailServer() {
-        sendSimple(mapOf("to" to "joao@erudio.test", "subject" to "Formação Spring Boot 2026", "body" to "<p>Olá, João! Até a próxima aula.</p>"))
+        sendSimple(mapOf("to" to "joao@erudio.test", "subject" to "Formação Spring Boot com Kotlin", "body" to "<p>Olá, João! Até a próxima aula.</p>"))
 
         val message = onlyMessage()
-        assertEquals("Formação Spring Boot 2026", message.subject)
+        assertEquals("Formação Spring Boot com Kotlin", message.subject)
         assertEquals("<p>Olá, João! Até a próxima aula.</p>", MailContent.of(message).html())
     }
 

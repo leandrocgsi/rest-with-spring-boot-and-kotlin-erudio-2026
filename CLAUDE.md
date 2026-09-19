@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Spring Boot 4.1.1 / Kotlin 2.3 (JDK 25) REST API (Maven, base package `br.com.erudio`) from the Erudio course "Formação Spring Boot 2026: do Zero ao Deploy na AWS e GCP com Kotlin, Docker e Kubernetes". It is a 1:1 port of the Java project `rest-with-spring-boot-and-java-erudio-2026`: same endpoints, status codes, payloads (field order, date formats, HAL links), Flyway migrations (`V1..V18`, byte-identical), Jasper templates, database (`rest_with_spring_boot_erudio`) and Postman collection (`Collections/`). The app manages People and Books, with JWT auth, file upload/download, CSV/XLSX/PDF import/export and email sending.
+Spring Boot 4.1.1 / Kotlin 2.3 (JDK 25) REST API (Maven, base package `br.com.erudio`) from the Erudio course "Formação Spring Boot com Kotlin: REST APIs Profissionais do Zero ao Deploy na AWS com Docker e Kubernetes". It is a 1:1 port of the Java project `rest-with-spring-boot-and-java-erudio-2026`: same endpoints, status codes, payloads (field order, date formats, HAL links), Flyway migrations (`V1..V18`, byte-identical), Jasper templates, database (`rest_with_spring_boot_erudio`) and Postman collection (`Collections/`). The app manages People and Books, with JWT auth, file upload/download, CSV/XLSX/PDF import/export and email sending.
 
 When changing behavior, keep it identical to the Java project unless the change is asked for explicitly. Several settings below exist only for that reason; do not "clean them up".
 
