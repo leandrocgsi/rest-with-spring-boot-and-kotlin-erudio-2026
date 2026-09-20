@@ -1,9 +1,8 @@
 package br.com.erudio.model
 
 import jakarta.persistence.*
-import java.util.*
+import java.time.LocalDate
 
-@Suppress("DEPRECATION")
 @Entity
 @Table(name = "books")
 data class Book(
@@ -16,8 +15,7 @@ data class Book(
     var author: String? = null,
 
     @Column(name = "launch_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    var launchDate: Date? = null,
+    var launchDate: LocalDate? = null,
 
     @Column(nullable = false)
     var price: Double? = null,

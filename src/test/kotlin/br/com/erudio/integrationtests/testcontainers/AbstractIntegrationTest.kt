@@ -6,11 +6,10 @@ import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.env.MapPropertySource
 import org.springframework.test.context.ContextConfiguration
-import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.lifecycle.Startables
+import org.testcontainers.mysql.MySQLContainer
 import java.util.stream.Stream
 
-@Suppress("DEPRECATION")
 @ContextConfiguration(initializers = [AbstractIntegrationTest.Initializer::class])
 open class AbstractIntegrationTest {
 
@@ -34,7 +33,7 @@ open class AbstractIntegrationTest {
             const val SMTP_USERNAME = "sender@erudio.test"
             const val SMTP_PASSWORD = "secret"
 
-            private val mysql: MySQLContainer<*> = MySQLContainer("mysql:9.1.0")
+            private val mysql = MySQLContainer("mysql:9.1.0").withConfigurationOverride("mysql-default-conf")
 
             val smtp: GreenMail = GreenMail(ServerSetupTest.SMTP.dynamicPort())
 

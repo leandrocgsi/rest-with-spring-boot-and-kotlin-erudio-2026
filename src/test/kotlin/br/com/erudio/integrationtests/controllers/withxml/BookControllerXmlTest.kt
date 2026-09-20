@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import tools.jackson.databind.DeserializationFeature
 import tools.jackson.dataformat.xml.XmlMapper
-import java.util.*
+import java.time.LocalDate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -223,6 +223,6 @@ class BookControllerXmlTest : AbstractIntegrationTest() {
         book.title = "Docker Deep Dive"
         book.author = "Nigel Poulton"
         book.price = 55.99
-        book.launchDate = Date()
+        book.launchDate = LocalDate.now()
     }
 }

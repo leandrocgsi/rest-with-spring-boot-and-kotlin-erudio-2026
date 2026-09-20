@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import java.util.*
+import java.time.LocalDate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -226,6 +226,6 @@ class BookControllerYamlTest : AbstractIntegrationTest() {
         book.title = "Docker Deep Dive"
         book.author = "Nigel Poulton"
         book.price = 55.99
-        book.launchDate = Date()
+        book.launchDate = LocalDate.now()
     }
 }

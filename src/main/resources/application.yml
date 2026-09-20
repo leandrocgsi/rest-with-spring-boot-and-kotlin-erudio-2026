@@ -52,9 +52,11 @@ logging:
 springdoc:
   enable-kotlin: false
   api-docs:
+    enabled: true
     version: openapi_3_0
   paths-to-match:
     - /auth/**
     - /api/**/v1/**
   swagger-ui:
+    enabled: true
     use-root-path: true

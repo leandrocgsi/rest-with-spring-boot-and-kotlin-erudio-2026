@@ -19,7 +19,7 @@
 		<property name="com.jaspersoft.studio.field.label" value="author"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="books"/>
 	</field>
-	<field name="launchDate" class="java.util.Date">
+	<field name="launchDate" class="java.time.LocalDate">
 		<property name="com.jaspersoft.studio.field.name" value="launch_date"/>
 		<property name="com.jaspersoft.studio.field.label" value="launchDate"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="books"/>
@@ -72,7 +72,7 @@
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc060f9d-8028-44a6-acf7-afe05e933c76"/>
 			</element>
 			<element kind="textField" uuid="61517611-0426-474f-a14c-260639aa5a25" x="360" y="0" width="70" height="30" forecolor="#141212" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle" style="zebraStyle">
-				<expression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{launchDate})]]></expression>
+				<expression><![CDATA[$F{launchDate}.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"))]]></expression>
 				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4c1d3107-066d-409b-89e1-57ff2f98a3e7"/>
 			</element>
 			<element kind="textField" uuid="398e4fd6-082c-498c-9fb2-b7e0ad4b656b" x="430" y="0" width="60" height="30" forecolor="#141212" fontSize="12.0" hTextAlign="Center" vTextAlign="Middle" style="zebraStyle">

@@ -24,7 +24,7 @@ import org.springframework.http.MediaType
 import tools.jackson.databind.DeserializationFeature
 import tools.jackson.databind.ObjectMapper
 import tools.jackson.databind.json.JsonMapper
-import java.util.*
+import java.time.LocalDate
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -221,6 +221,6 @@ class BookControllerJsonTest : AbstractIntegrationTest() {
         book.title = "Docker Deep Dive"
         book.author = "Nigel Poulton"
         book.price = 55.99
-        book.launchDate = Date()
+        book.launchDate = LocalDate.now()
     }
 }

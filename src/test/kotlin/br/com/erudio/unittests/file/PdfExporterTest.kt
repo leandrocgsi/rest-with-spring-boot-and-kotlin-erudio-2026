@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.core.io.Resource
 import org.springframework.test.util.ReflectionTestUtils
-import java.util.*
+import java.time.LocalDate
 
 class PdfExporterTest {
 
@@ -41,7 +41,7 @@ class PdfExporterTest {
         book.title = title
         book.author = author
         book.price = 49.9
-        book.launchDate = Date(1_511_963_405_878L)
+        book.launchDate = LocalDate.of(2017, 11, 29)
         return book
     }
 

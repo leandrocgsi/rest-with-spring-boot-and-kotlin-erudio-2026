@@ -2,7 +2,7 @@ package br.com.erudio.unittests.mapper.mocks
 
 import br.com.erudio.data.dto.BookDTO
 import br.com.erudio.model.Book
-import java.util.*
+import java.time.LocalDate
 
 class MockBook {
 
@@ -34,7 +34,7 @@ class MockBook {
         val book = Book()
         book.id = number.toLong()
         book.author = "Some Author$number"
-        book.launchDate = Date()
+        book.launchDate = LocalDate.now()
         book.price = 25.0
         book.title = "Some Title$number"
         return book
@@ -44,7 +44,7 @@ class MockBook {
         val book = BookDTO()
         book.id = number.toLong()
         book.author = "Some Author$number"
-        book.launchDate = Date()
+        book.launchDate = LocalDate.now()
         book.price = 25.0
         book.title = "Some Title$number"
         return book
