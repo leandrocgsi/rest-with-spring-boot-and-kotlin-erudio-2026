@@ -51,12 +51,9 @@ class PdfExporter : PersonExporter {
 
         val subReportDataSource = JRBeanCollectionDataSource(person.books)
 
-        val path = javaClass.getResource("/templates/books.jasper")!!.path
-
         val parameters: MutableMap<String, Any> = HashMap()
         parameters["SUB_REPORT_DATA_SOURCE"] = subReportDataSource
         parameters["BOOK_SUB_REPORT"] = subReport
-        parameters["SUB_REPORT_DIR"] = path
         parameters["QR_CODEIMAGE"] = qrCodeStream
 
         val mainDataSource = JRBeanCollectionDataSource(listOf(person))
