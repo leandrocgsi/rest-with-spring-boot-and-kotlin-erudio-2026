@@ -43,7 +43,7 @@ Things worth knowing about the tests:
 - `FileStorageService` creates `file.upload-dir` (`/Code/UploadDir`) in its constructor at startup. On Windows this resolves against the current drive root.
 - Swagger UI is served at `/swagger-ui/index.html`.
 - Seeded login used by the tests: `leandro` / `admin123`.
-- PDF export compiles the `.jrxml` templates at request time, and it works from `java -jar` on the fat jar because `jasperreports-jdt` is on the classpath: JasperReports then compiles in memory with the Eclipse JDT compiler instead of `javac`, which cannot read the nested jars. The `books` sub-report reaches `person.jrxml` as the compiled `BOOK_SUB_REPORT` object; a file path from `getResource(...).getPath()` fails inside the fat jar. Export failures reach the client as an empty `403`, not a `500`.
+- PDF export compiles the `.jrxml` templates at request time, and it works from `java -jar` on the fat jar because `jasperreports-jdt` is on the classpath: JasperReports then compiles in memory with the Eclipse JDT compiler instead of `javac`, which cannot read the nested jars. `PdfExporter` compiles each template once and reuses the compiled `JasperReport` (a `ConcurrentHashMap` keyed by template file name), so editing a `.jrxml` needs an app restart. The `books` sub-report reaches `person.jrxml` as the compiled `BOOK_SUB_REPORT` object; a file path from `getResource(...).getPath()` fails inside the fat jar. Export failures reach the client as an empty `403`, not a `500`.
 
 ## Architecture
 

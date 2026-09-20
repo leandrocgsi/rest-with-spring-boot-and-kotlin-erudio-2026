@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.core.io.Resource
 import org.springframework.test.util.ReflectionTestUtils
 import java.time.LocalDate
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
 
 class PdfExporterTest {
 
@@ -110,6 +112,40 @@ class PdfExporterTest {
         val pdf = read(resource)
         assertEquals(1, pdf.pages)
         assertFalse(pdf.text.contains("Ayrton"), pdf.text)
+    }
+
+    @Test
+    fun exportPeopleGivesTheSameResultWhenTheCompiledReportIsReused() {
+        val people = listOf(person(1L, "Ayrton", "Senna"))
+
+        val first = read(exporter.exportPeople(people))
+        val second = read(exporter.exportPeople(people))
+
+        assertEquals(first.pages, second.pages)
+        assertTrue(second.text.contains("Ayrton"), second.text)
+    }
+
+    @Test
+    fun exportPeopleIsSafeToCallFromSeveralThreadsAtTheSameTime() {
+        val people = listOf(person(1L, "Ayrton", "Senna"))
+
+        Executors.newFixedThreadPool(8).use { pool ->
+            val results = (1..16).map { pool.submit(Callable { read(exporter.exportPeople(people)) }) }
+            results.forEach { assertTrue(it.get().text.contains("Ayrton")) }
+        }
+    }
+
+    @Test
+    fun exportPersonGivesTheSameResultWhenTheCompiledReportsAreReused() {
+        val person = person(1L, "Ayrton", "Senna")
+        person.profileUrl = "https://en.wikipedia.org/wiki/Ayrton_Senna"
+        person.books = listOf(book(1L, "Clean Code", "Robert C. Martin"))
+
+        val first = read(exporter.exportPerson(person))
+        val second = read(exporter.exportPerson(person))
+
+        assertEquals(first.pages, second.pages)
+        assertTrue(second.text.contains("Clean Code"), second.text)
     }
 
     @Test
