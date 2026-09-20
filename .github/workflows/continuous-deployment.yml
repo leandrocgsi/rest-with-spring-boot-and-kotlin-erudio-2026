@@ -30,6 +30,36 @@ jobs:
     - name: Docker Compose Build
       run: docker compose build
 
+    - name: Start the API and the database
+      run: docker compose up -d
+
+    - name: Wait for the API
+      run: |
+        for _ in $(seq 1 40); do
+          if curl -fsS -o /dev/null http://localhost:8080/swagger-ui/index.html; then
+            echo "API is up"
+            exit 0
+          fi
+          sleep 3
+        done
+        echo "API did not start in time"
+        docker compose logs
+        exit 1
+
+    - name: Postman tests with Newman
+      run: |
+        npx --yes newman@6.2.2 run Collections/*.postman_collection.json \
+          -e Collections/SPRING_BOOT_KOTLIN_ERUDIO.postman_environment.json \
+          --working-dir Collections
+
+    - name: Show the logs of the containers
+      if: failure()
+      run: docker compose logs
+
+    - name: Stop the API and the database
+      if: always()
+      run: docker compose down -v
+
     - name: Push to Docker Hub
       run: |
         docker tag ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-kotlin-erudio:latest \
