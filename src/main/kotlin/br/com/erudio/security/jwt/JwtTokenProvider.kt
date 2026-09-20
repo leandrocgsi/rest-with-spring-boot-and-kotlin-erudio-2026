@@ -4,6 +4,7 @@ import br.com.erudio.data.dto.security.TokenDTO
 import br.com.erudio.exception.InvalidJwtAuthenticationException
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.interfaces.DecodedJWT
 import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.HttpServletRequest
@@ -58,7 +59,11 @@ class JwtTokenProvider {
         }
 
         val verifier = JWT.require(algorithm).build()
-        val decodedJWT = verifier.verify(token)
+        val decodedJWT = try {
+            verifier.verify(token)
+        } catch (e: JWTVerificationException) {
+            throw InvalidJwtAuthenticationException("Expired or Invalid JWT Token!")
+        }
 
         val username = decodedJWT.subject
         val roles: List<String?> = decodedJWT.getClaim("roles").asList(String::class.java)
@@ -111,8 +116,8 @@ class JwtTokenProvider {
     }
 
     fun validateToken(token: String): Boolean {
-        val decodedJWT = decodedToken(token)
         try {
+            val decodedJWT = decodedToken(token)
             if (decodedJWT.expiresAt.before(Date())) {
                 return false
             }

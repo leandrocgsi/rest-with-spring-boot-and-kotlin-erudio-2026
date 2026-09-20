@@ -18,8 +18,6 @@ spring:
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_erudio?useTimezone=true&serverTimezone=UTC
     username: root
     password: admin123
-  jackson:
-    use-jackson2-defaults: true
   jpa:
     hibernate:
       ddl-auto: none
@@ -53,7 +51,6 @@ springdoc:
   enable-kotlin: false
   api-docs:
     enabled: true
-    version: openapi_3_0
   paths-to-match:
     - /auth/**
     - /api/**/v1/**

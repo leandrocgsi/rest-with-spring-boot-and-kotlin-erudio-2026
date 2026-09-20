@@ -2,7 +2,7 @@
 
 | Arquivo | O que é |
 |---|---|
-| `Formação Spring Boot com Kotlin - ... .postman_collection.json` | 48 requisições (Auth, person, book, file, e-Mail), cada uma com testes (`pm.test`) |
+| `Formação Spring Boot com Kotlin - ... .postman_collection.json` | 51 requisições (Auth, person, book, file, e-Mail), cada uma com testes (`pm.test`) |
 | `SPRING_BOOT_KOTLIN_ERUDIO.postman_environment.json` | Variáveis usadas pela collection |
 | `files/` | Arquivos de exemplo usados nos uploads (`sample.txt`, `people.csv`, `people.xlsx`) |
 
@@ -38,8 +38,8 @@ O mesmo comando roda no GitHub Actions (`.github/workflows/continuous-deployment
 
 ## O que os testes verificam
 
-- **Auth:** tokens e JWT (`sub` e `roles`), credenciais inválidas e em branco, criação de usuário com senha em hash e signin do usuário criado, refresh e refresh de usuário inexistente.
-- **person e book:** CRUD completo (POST, GET, PUT, PATCH, DELETE), corpo, links HATEOAS/HAL, paginação, busca por nome, 404 depois do delete, JSON malformado (400), sem token (403), livro sem título rejeitado.
+- **Auth:** tokens e JWT (`sub` e `roles`), credenciais inválidas e em branco, criação de usuário com senha em hash e signin do usuário criado, refresh, refresh com token inválido e refresh de usuário inexistente.
+- **person e book:** CRUD completo (POST, GET, PUT, PATCH, DELETE), corpo, links HATEOAS/HAL, paginação, busca por nome, 404 depois do delete, JSON malformado (400), sem token ou com token inválido (403), livro sem título rejeitado.
 - **Negociação de conteúdo:** JSON, XML e YAML.
 - **Relatórios:** XLSX, CSV e PDF (cabeçalho do arquivo e `Content-Disposition`).
 - **Importação em massa:** XLSX e CSV, e arquivo não suportado. Os testes apagam o que criaram.

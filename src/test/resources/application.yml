@@ -17,8 +17,6 @@ spring:
     name: rest-with-spring-boot-and-kotlin-erudio
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jackson:
-    use-jackson2-defaults: true
   jpa:
     hibernate:
       ddl-auto: none
@@ -51,7 +49,6 @@ springdoc:
   enable-kotlin: false
   api-docs:
     enabled: true
-    version: openapi_3_0
   paths-to-match:
     - /auth/**
     - /api/**/v1/**

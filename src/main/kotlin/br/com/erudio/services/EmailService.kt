@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
 import tools.jackson.core.JacksonException
+import tools.jackson.databind.DeserializationFeature
 import tools.jackson.databind.json.JsonMapper
 import java.io.File
 import java.io.IOException
@@ -36,7 +37,7 @@ class EmailService {
     fun setEmailWithAttachment(emailRequestJson: String, attachment: MultipartFile) {
         var tempFile: File? = null
         try {
-            val emailRequest = JsonMapper.builderWithJackson2Defaults().build()
+            val emailRequest = JsonMapper.builder().enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build()
                 .readValue(emailRequestJson, EmailRequestDTO::class.java)
             tempFile = File.createTempFile("attachment", attachment.originalFilename)
             attachment.transferTo(tempFile)
