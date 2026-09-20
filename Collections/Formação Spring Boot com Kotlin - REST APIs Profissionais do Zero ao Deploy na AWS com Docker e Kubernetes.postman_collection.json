@@ -30,6 +30,7 @@
 									"pm.test('The access token is a JWT of this user with the roles claim', function () {",
 									"    const parts = token.accessToken.split('.');",
 									"    pm.expect(parts).to.have.lengthOf(3);",
+									"    const atob = require('atob');",
 									"    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));",
 									"    pm.expect(payload.sub).to.eql(token.username);",
 									"    pm.expect(payload.roles).to.be.an('array');",
