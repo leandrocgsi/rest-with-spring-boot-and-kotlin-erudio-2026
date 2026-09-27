@@ -2,8 +2,6 @@ server:
   port: 8888
 cors:
   originPatterns: http://localhost:8080,http://localhost:3000,https://www.erudio.com.br
-file:
-  upload-dir: target/test-uploads
 security:
   jwt:
     token:

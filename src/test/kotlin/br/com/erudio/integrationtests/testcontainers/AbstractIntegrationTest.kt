@@ -6,8 +6,10 @@ import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.env.MapPropertySource
 import org.springframework.test.context.ContextConfiguration
+import org.testcontainers.containers.localstack.LocalStackContainer
 import org.testcontainers.lifecycle.Startables
 import org.testcontainers.mysql.MySQLContainer
+import org.testcontainers.utility.DockerImageName
 import java.util.stream.Stream
 
 @ContextConfiguration(initializers = [AbstractIntegrationTest.Initializer::class])
@@ -35,10 +37,13 @@ open class AbstractIntegrationTest {
 
             private val mysql = MySQLContainer("mysql:9.1.0").withConfigurationOverride("mysql-default-conf")
 
+            private val localstack = LocalStackContainer(DockerImageName.parse("localstack/localstack:4.11.1"))
+                .withServices(LocalStackContainer.Service.S3)
+
             val smtp: GreenMail = GreenMail(ServerSetupTest.SMTP.dynamicPort())
 
             private fun startContainers() {
-                Startables.deepStart(Stream.of(mysql)).join()
+                Startables.deepStart(Stream.of(mysql, localstack)).join()
             }
 
             @Synchronized
@@ -60,7 +65,12 @@ open class AbstractIntegrationTest {
                     "spring.mail.password" to SMTP_PASSWORD,
                     "spring.mail.properties.mail.smtp.auth" to "true",
                     "spring.mail.properties.mail.smtp.starttls.enable" to "false",
-                    "spring.mail.properties.mail.smtp.starttls.required" to "false"
+                    "spring.mail.properties.mail.smtp.starttls.required" to "false",
+                    "aws.s3.bucket" to "erudio-files-test",
+                    "aws.s3.region" to localstack.region,
+                    "aws.s3.endpoint" to localstack.getEndpointOverride(LocalStackContainer.Service.S3).toString(),
+                    "aws.s3.access-key" to localstack.accessKey,
+                    "aws.s3.secret-key" to localstack.secretKey
                 )
             }
         }

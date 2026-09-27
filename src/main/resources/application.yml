@@ -1,7 +1,12 @@
 cors:
   originPatterns: http://localhost:8080,http://localhost:3000,https://www.erudio.com.br
-file:
-  upload-dir: /Code/UploadDir
+aws:
+  s3:
+    bucket: erudio-files
+    region: us-east-1
+    endpoint: http://localhost:4566
+    access-key: test
+    secret-key: test
 security:
   jwt:
     token:

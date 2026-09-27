@@ -1,39 +1,56 @@
 package br.com.erudio.unittests.services
 
-import br.com.erudio.config.FileStorageConfig
+import br.com.erudio.config.AwsS3Properties
 import br.com.erudio.exception.FileNotFoundException
 import br.com.erudio.exception.FileStorageException
 import br.com.erudio.services.FileStorageService
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.io.TempDir
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
+import software.amazon.awssdk.core.ResponseBytes
+import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
+import software.amazon.awssdk.services.s3.model.GetObjectResponse
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest
+import software.amazon.awssdk.services.s3.model.HeadBucketResponse
+import software.amazon.awssdk.services.s3.model.NoSuchBucketException
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import software.amazon.awssdk.services.s3.model.S3Exception
 import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
 
 class FileStorageServiceTest {
 
-    @TempDir
-    lateinit var tempDir: Path
+    companion object {
+        private const val BUCKET = "erudio-files-test"
+    }
 
-    private lateinit var uploadDir: Path
+    private lateinit var s3Client: S3Client
     private lateinit var service: FileStorageService
 
     @BeforeEach
     fun setUp() {
-        uploadDir = tempDir.resolve("uploads")
-        service = FileStorageService(configFor(uploadDir))
+        s3Client = mock()
+        whenever(s3Client.headBucket(any<HeadBucketRequest>())).thenReturn(HeadBucketResponse.builder().build())
+        service = FileStorageService(s3Client, propertiesFor(BUCKET))
     }
 
-    private fun configFor(directory: Path): FileStorageConfig {
-        val config = FileStorageConfig()
-        config.uploadDir = directory.toString()
-        return config
+    private fun propertiesFor(bucket: String): AwsS3Properties {
+        val properties = AwsS3Properties()
+        properties.bucket = bucket
+        return properties
     }
 
     private fun file(name: String, content: String): MultipartFile {
@@ -41,23 +58,35 @@ class FileStorageServiceTest {
     }
 
     @Test
-    fun createsTheUploadDirectoryWhenItDoesNotExist() {
-        val nested = tempDir.resolve("a").resolve("b").resolve("uploads")
-
-        FileStorageService(configFor(nested))
-
-        assertTrue(Files.isDirectory(nested))
+    fun doesNotRecreateTheBucketWhenItAlreadyExists() {
+        verify(s3Client).headBucket(any<HeadBucketRequest>())
+        verify(s3Client, never()).createBucket(any<CreateBucketRequest>())
     }
 
     @Test
-    fun failsWhenTheUploadDirectoryCannotBeCreated() {
-        val regularFile = Files.writeString(tempDir.resolve("not-a-directory"), "x")
+    fun createsTheBucketWhenItDoesNotExist() {
+        val freshClient: S3Client = mock()
+        whenever(freshClient.headBucket(any<HeadBucketRequest>()))
+            .thenThrow(NoSuchBucketException.builder().message("missing").build())
+
+        FileStorageService(freshClient, propertiesFor(BUCKET))
+
+        verify(freshClient).createBucket(argThat<CreateBucketRequest> { bucket() == BUCKET })
+    }
+
+    @Test
+    fun failsWhenTheBucketCannotBeVerifiedOrCreated() {
+        val brokenClient: S3Client = mock()
+        whenever(brokenClient.headBucket(any<HeadBucketRequest>()))
+            .thenThrow(NoSuchBucketException.builder().message("missing").build())
+        whenever(brokenClient.createBucket(any<CreateBucketRequest>()))
+            .thenThrow(S3Exception.builder().message("boom").build())
 
         val exception = assertThrows(FileStorageException::class.java) {
-            FileStorageService(configFor(regularFile.resolve("uploads")))
+            FileStorageService(brokenClient, propertiesFor(BUCKET))
         }
 
-        assertEquals("Could not create the directory where files will be stored!", exception.message)
+        assertEquals("Could not verify or create the S3 bucket where files will be stored!", exception.message)
     }
 
     @Test
@@ -65,7 +94,14 @@ class FileStorageServiceTest {
         val stored = service.storeFile(file("notes.txt", "hello upload"))
 
         assertEquals("notes.txt", stored)
-        assertEquals("hello upload", Files.readString(uploadDir.resolve("notes.txt")))
+
+        val requestCaptor = argumentCaptor<PutObjectRequest>()
+        val bodyCaptor = argumentCaptor<RequestBody>()
+        verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture())
+
+        assertEquals(BUCKET, requestCaptor.firstValue.bucket())
+        assertEquals("notes.txt", requestCaptor.firstValue.key())
+        assertEquals("hello upload", contentOf(bodyCaptor.firstValue))
     }
 
     @Test
@@ -73,7 +109,10 @@ class FileStorageServiceTest {
         service.storeFile(file("notes.txt", "first"))
         service.storeFile(file("notes.txt", "second"))
 
-        assertEquals("second", Files.readString(uploadDir.resolve("notes.txt")))
+        val bodyCaptor = argumentCaptor<RequestBody>()
+        verify(s3Client, times(2)).putObject(any<PutObjectRequest>(), bodyCaptor.capture())
+
+        assertEquals("second", contentOf(bodyCaptor.secondValue))
     }
 
     @Test
@@ -81,7 +120,7 @@ class FileStorageServiceTest {
         val stored = service.storeFile(file("folder/../notes.txt", "content"))
 
         assertEquals("notes.txt", stored)
-        assertTrue(Files.exists(uploadDir.resolve("notes.txt")))
+        verify(s3Client).putObject(argThat<PutObjectRequest> { key() == "notes.txt" }, any<RequestBody>())
     }
 
     @Test
@@ -93,14 +132,14 @@ class FileStorageServiceTest {
         assertEquals("Could not store file ../evil.txt. Please try Again!", exception.message)
         assertInstanceOf(FileStorageException::class.java, exception.cause)
         assertTrue(exception.cause!!.message!!.contains("Invalid path Sequence"))
-        assertFalse(Files.exists(tempDir.resolve("evil.txt")))
+        verify(s3Client, never()).putObject(any<PutObjectRequest>(), any<RequestBody>())
     }
 
     @Test
     fun reportsAFailureReadingTheUploadedContent() {
-        val broken = mock<MultipartFile>()
+        val broken: MultipartFile = mock()
         whenever(broken.originalFilename).thenReturn("broken.txt")
-        whenever(broken.inputStream).thenThrow(IOException("connection reset"))
+        whenever(broken.bytes).thenThrow(IOException("connection reset"))
 
         val exception = assertThrows(FileStorageException::class.java) { service.storeFile(broken) }
 
@@ -110,7 +149,8 @@ class FileStorageServiceTest {
 
     @Test
     fun loadsAFileThatWasStored() {
-        service.storeFile(file("notes.txt", "stored content"))
+        whenever(s3Client.getObjectAsBytes(argThat<GetObjectRequest> { key() == "notes.txt" }))
+            .thenReturn(ResponseBytes.fromByteArray(GetObjectResponse.builder().build(), "stored content".toByteArray(Charsets.UTF_8)))
 
         val resource = service.loadFileAsResource("notes.txt")
 
@@ -121,10 +161,17 @@ class FileStorageServiceTest {
 
     @Test
     fun failsToLoadAFileThatDoesNotExist() {
+        whenever(s3Client.getObjectAsBytes(any<GetObjectRequest>()))
+            .thenThrow(NoSuchKeyException.builder().message("missing").build())
+
         val exception = assertThrows(FileNotFoundException::class.java) {
             service.loadFileAsResource("missing.txt")
         }
 
         assertEquals("File not found missing.txt", exception.message)
+    }
+
+    private fun contentOf(body: RequestBody): String {
+        return String(body.contentStreamProvider().newStream().readAllBytes(), Charsets.UTF_8)
     }
 }

@@ -4,10 +4,7 @@ import br.com.erudio.integrationtests.AuthenticatedIntegrationTest
 import io.restassured.RestAssured.given
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.*
 
 class FileControllerTest : AuthenticatedIntegrationTest() {
@@ -166,7 +163,11 @@ class FileControllerTest : AuthenticatedIntegrationTest() {
             .statusCode(500)
             .body("message", equalTo("Could not store file $name. Please try Again!"))
 
-        assertFalse(Files.exists(Path.of("target", "escaped-$tag.txt")))
+        given().spec(authenticated())
+            .`when`()
+            .get("$BASE/downloadFile/escaped-$tag.txt")
+            .then()
+            .statusCode(404)
     }
 
     @Test

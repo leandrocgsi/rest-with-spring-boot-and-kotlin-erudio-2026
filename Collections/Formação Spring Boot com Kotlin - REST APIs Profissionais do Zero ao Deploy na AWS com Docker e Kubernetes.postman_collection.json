@@ -97,7 +97,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -141,7 +141,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -180,7 +180,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -219,7 +219,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"admin123\"\n}",
+									"raw": "{\n  \"username\": \"leandro\",\n  \"password\": \"\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -366,7 +366,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsZWFuZHJvIiwiZXhwIjo5OTk5OTk5OTk5fQ.c2lnbmF0dXJlLWVycmFkYQ"
+								"value": "Bearer invalid-token"
 							}
 						],
 						"url": {
@@ -928,7 +928,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsZWFuZHJvIiwiZXhwIjo5OTk5OTk5OTk5fQ.c2lnbmF0dXJlLWVycmFkYQ",
+								"value": "Bearer invalid-token",
 								"type": "text"
 							}
 						],
@@ -4039,7 +4039,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsZWFuZHJvIiwiZXhwIjo5OTk5OTk5OTk5fQ.c2lnbmF0dXJlLWVycmFkYQ"
+								"value": "Bearer invalid-token"
 							}
 						],
 						"url": {

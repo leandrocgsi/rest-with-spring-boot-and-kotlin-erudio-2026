@@ -1,35 +1,49 @@
 package br.com.erudio.services
 
-import br.com.erudio.config.FileStorageConfig
+import br.com.erudio.config.AwsS3Properties
 import br.com.erudio.exception.FileNotFoundException
 import br.com.erudio.exception.FileStorageException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
-import org.springframework.core.io.UrlResource
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
+import software.amazon.awssdk.core.sync.RequestBody
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest
+import software.amazon.awssdk.services.s3.model.NoSuchBucketException
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
+import java.io.File
 import java.util.logging.Logger
 
 @Service
-class FileStorageService @Autowired constructor(fileStorageConfig: FileStorageConfig) {
+class FileStorageService @Autowired constructor(
+    private val s3Client: S3Client,
+    properties: AwsS3Properties
+) {
 
     private val logger = Logger.getLogger(FileStorageService::class.java.name)
 
-    private val fileStorageLocation: Path
+    private val bucket: String = properties.bucket
 
     init {
-        fileStorageLocation = Paths.get(fileStorageConfig.uploadDir).toAbsolutePath().normalize()
+        createBucketIfMissing()
+    }
+
+    private fun createBucketIfMissing() {
         try {
-            logger.info("Creating Directories")
-            Files.createDirectories(fileStorageLocation)
+            try {
+                s3Client.headBucket(HeadBucketRequest.builder().bucket(bucket).build())
+            } catch (e: NoSuchBucketException) {
+                logger.info("Creating S3 bucket $bucket")
+                s3Client.createBucket(CreateBucketRequest.builder().bucket(bucket).build())
+            }
         } catch (e: Exception) {
-            logger.severe("Could not create the directory where files will be stored!")
-            throw FileStorageException("Could not create the directory where files will be stored!", e)
+            logger.severe("Could not verify or create the S3 bucket where files will be stored!")
+            throw FileStorageException("Could not verify or create the S3 bucket where files will be stored!", e)
         }
     }
 
@@ -43,10 +57,15 @@ class FileStorageService @Autowired constructor(fileStorageConfig: FileStorageCo
                 throw FileStorageException("Sorry! Filename Contains a Invalid path Sequence $fileName")
             }
 
-            logger.info("Saving file in Disk")
+            logger.info("Saving file in S3")
 
-            val targetLocation = fileStorageLocation.resolve(fileName)
-            Files.copy(file.inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING)
+            val request = PutObjectRequest.builder()
+                .bucket(bucket)
+                .key(fileName)
+                .contentType(file.contentType)
+                .build()
+
+            s3Client.putObject(request, RequestBody.fromBytes(file.bytes))
             fileName
         } catch (e: Exception) {
             logger.severe("Could not store file $fileName. Please try Again!")
@@ -56,13 +75,14 @@ class FileStorageService @Autowired constructor(fileStorageConfig: FileStorageCo
 
     fun loadFileAsResource(fileName: String): Resource {
         return try {
-            val filePath = fileStorageLocation.resolve(fileName).normalize()
-            val resource: Resource = UrlResource(filePath.toUri())
-            if (resource.exists()) {
-                resource
-            } else {
-                logger.severe("File not found $fileName")
-                throw FileNotFoundException("File not found $fileName")
+            val content = s3Client.getObjectAsBytes(
+                GetObjectRequest.builder().bucket(bucket).key(fileName).build()
+            ).asByteArray()
+
+            object : ByteArrayResource(content) {
+                override fun getFilename(): String = fileName
+                override fun getFile(): File = File(fileName)
+                override fun exists(): Boolean = true
             }
         } catch (e: Exception) {
             logger.severe("File not found $fileName")
